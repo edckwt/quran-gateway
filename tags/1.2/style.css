@@ -1,7 +1,7 @@
 @font-face {
-  font-family: 'KFGQPC Uthman Taha Naskh';
-  src: url(fonts/UthmanTN1_Ver10/UthmanTN1_Ver10.otf);
-  font-weight: bold;
+    font-family: 'KFGQPC Uthman Taha Naskh';
+    src: url(fonts/UthmanTN1_Ver10/UthmanTN1_Ver10.otf);
+    font-weight: bold;
 }
 
 .quran_gateway_widget { margin:0; padding:0; }
@@ -51,4 +51,4 @@
 
 @media only screen and (max-width: 240px) {
 .quran_gateway_sora_list ul li { display:block; width:100%; padding:0 0 10px 0; margin:0 0 10px 0; }
-}
+

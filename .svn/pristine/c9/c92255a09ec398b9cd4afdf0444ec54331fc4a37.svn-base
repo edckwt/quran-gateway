@@ -1,39 +1,35 @@
 <?php
-/**
- * Quran Gateway
- *
- * Plugin Name: Quran Gateway
- * Plugin URI:  https://wordpress.org/plugins/quran-gateway/
- * Description: Quran Gateway plugin allows you to display the Quran or its translation in different languages either verse by verse or whole surah along with audio streaming.
- * Version:     1.5
- * Author:      EDC TEAM (E-Da`wah Committee)
- * Author URI:  https://edc.org.kw
- * License:     GPLv2 or later
- * License URI: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * Requires at least: 5.0
- * Requires PHP: 7.4
- */
-
-include_once('setting.php');
-include_once('files/ayat.php');
+/*
+ Plugin Name: Quran Gateway
+ Plugin URI: http://www.islam.com.kw
+ Description: Quran Gateway plugin allows you to display the Quran or its translation in different languages either verse by verse or whole surah along with audio streaming.
+ Version: 1.2
+ Author: EDC Team (E-Da`wah Committee)
+ Author URI: http://www.islam.com.kw
+ License: It is Free -_-
+*/
+include('setting.php');
+include('files/ayat.php');
 
 if(!isset($_GET['language_id']) && !isset($_GET['sora_id'])){
+
 	if(get_option('quran_gateway_id') == 1){
-		include_once('files/English_Sahih_International.php');
+	include_once('files/English_Sahih_International.php');
 	}elseif(get_option('quran_gateway_id') == 2){
-		include_once('files/French.php');
+	include_once('files/French.php');
 	}elseif(get_option('quran_gateway_id') == 3){
-		include_once('files/German.php');
+	include_once('files/German.php');
 	}else{
-		include_once('files/English_Sahih_International.php');
+	include_once('files/English_Sahih_International.php');
 	}
+
 }
 
 function get_quran_languages($language_id=0){
-	$l[1] = array('English', 'Sahih International', '');
-	$l[2] = array('French', 'French', '');
-	$l[3] = array('German', 'German', '');
-	return $l[$language_id];
+$l[1] = array('English', 'Sahih International', '');
+$l[2] = array('French', 'French', '');
+$l[3] = array('German', 'German', '');
+return $l[$language_id];
 }
 
 function get_quran_gateway($dashboard=0){
@@ -288,7 +284,7 @@ add_filter('the_content','quran_by_sora_and_language_replace');
 function get_quran_all_sora($language=0){
 global $post, $sora_ar, $sora_en;
 $ID = $post->ID;
-$permalink = get_permalink( $ID );
+$permalink = post_permalink( $ID );
 //strip_tags()
 
 if( is_array($language) ){
@@ -334,10 +330,8 @@ add_filter('the_content','quran_all_sora_replace');
 
 function Quran_Gateway_head() {
     $options = get_option( 'my-theme-options' );
-    $color = ( isset($options['color']) ? $options['color'] : '' );
-		if( !empty($color) ){
-			echo "<style> h1 { color: $color; } </style>";
-		}
+    $color = $options['color'];
+    echo "<style> h1 { color: $color; } </style>";
 }
 add_action( 'wp_head', 'Quran_Gateway_head' );
 

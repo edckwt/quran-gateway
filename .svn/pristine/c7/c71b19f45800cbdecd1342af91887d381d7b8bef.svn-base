@@ -1,12 +1,11 @@
 === Quran Gateway ===
-Contributors: EDC TEAM
+Contributors: EDC Team
+Donate link: http://www.edc.org.kw
 Tags: Quran, Quran Gateway, verse, surah, audio, translation, languages, MP3, EDC
-Requires at least: 5.0
-Tested up to: 6.5.3
-Stable tag: 1.5
-Requires PHP: 7.4
+Requires at least: 3.0
+Tested up to: 5.5
+Stable tag: 1.2
 License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Display the Quran or its translation in different languages either verse by verse or whole surah along with audio streaming.
 
@@ -32,7 +31,7 @@ Features:
 * Compatible with all screens.
 * Special Control Panel for different options.
 
-PS: For Support click to [Islam.com.kw](https://islam.com.kw), [powered by EDC (e-Da`wah Committee)](https://edc.org.kw).
+PS: For Support click to [Islam.com.kw](http://www.islam.com.kw), [powered by EDC (e-Da`wah Committee)](http://www.edc.org.kw).
 
 == Installation ==
 
@@ -52,18 +51,6 @@ PS: For Support click to [Islam.com.kw](https://islam.com.kw), [powered by EDC (
 1. In Widget
 
 == Changelog ==
-
-= 1.5 =
-
-* Update: Functions.
-
-= 1.4 =
-
-* Fixes: some issues.
-
-= 1.3 =
-
-* Update: Function.
 
 = 1.2 =
 

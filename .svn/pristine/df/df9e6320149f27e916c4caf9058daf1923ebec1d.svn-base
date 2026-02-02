@@ -1,19 +1,13 @@
 <?php
-/**
- * Quran Gateway
- *
- * Plugin Name: Quran Gateway
- * Plugin URI:  https://wordpress.org/plugins/quran-gateway/
- * Description: Quran Gateway plugin allows you to display the Quran or its translation in different languages either verse by verse or whole surah along with audio streaming.
- * Version:     1.5
- * Author:      EDC TEAM (E-Da`wah Committee)
- * Author URI:  https://edc.org.kw
- * License:     GPLv2 or later
- * License URI: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
- * Requires at least: 5.0
- * Requires PHP: 7.4
- */
-
+/*
+ Plugin Name: Quran Gateway
+ Plugin URI: https://www.islam.com.kw
+ Description: Quran Gateway plugin allows you to display the Quran or its translation in different languages either verse by verse or whole surah along with audio streaming.
+ Version: 1.4
+ Author: EDC Team (E-Da`wah Committee)
+ Author URI: https://www.islam.com.kw
+ License: It is Free -_-
+*/
 include_once('setting.php');
 include_once('files/ayat.php');
 

@@ -1,35 +1,39 @@
 <?php
-/*
- Plugin Name: Quran Gateway
- Plugin URI: http://www.islam.com.kw
- Description: Quran Gateway plugin allows you to display the Quran or its translation in different languages either verse by verse or whole surah along with audio streaming.
- Version: 1.1
- Author: EDC Team (E-Da`wah Committee)
- Author URI: http://www.islam.com.kw
- License: It is Free -_-
-*/
-include('setting.php');
-include('files/ayat.php');
+/**
+ * Quran Gateway
+ *
+ * Plugin Name: Quran Gateway
+ * Plugin URI:  https://wordpress.org/plugins/quran-gateway/
+ * Description: Quran Gateway plugin allows you to display the Quran or its translation in different languages either verse by verse or whole surah along with audio streaming.
+ * Version:     1.5
+ * Author:      EDC TEAM (E-Da`wah Committee)
+ * Author URI:  https://edc.org.kw
+ * License:     GPLv2 or later
+ * License URI: http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+ * Requires at least: 5.0
+ * Requires PHP: 7.4
+ */
+
+include_once('setting.php');
+include_once('files/ayat.php');
 
 if(!isset($_GET['language_id']) && !isset($_GET['sora_id'])){
-	
-	if(get_option('quran_gateway_id') == 1){ 
-	include_once('files/English_Sahih_International.php');
+	if(get_option('quran_gateway_id') == 1){
+		include_once('files/English_Sahih_International.php');
 	}elseif(get_option('quran_gateway_id') == 2){
-	include_once('files/French.php');
+		include_once('files/French.php');
 	}elseif(get_option('quran_gateway_id') == 3){
-	include_once('files/German.php');
+		include_once('files/German.php');
 	}else{
-	include_once('files/English_Sahih_International.php');
+		include_once('files/English_Sahih_International.php');
 	}
-
 }
 
 function get_quran_languages($language_id=0){
-$l[1] = array('English', 'Sahih International', '');
-$l[2] = array('French', 'French', '');
-$l[3] = array('German', 'German', '');
-return $l[$language_id];
+	$l[1] = array('English', 'Sahih International', '');
+	$l[2] = array('French', 'French', '');
+	$l[3] = array('German', 'German', '');
+	return $l[$language_id];
 }
 
 function get_quran_gateway($dashboard=0){
@@ -38,7 +42,7 @@ global $QURAN, $TRANSLATE, $sora_ar, $sora_en, $ar_mp3_files, $en_mp3_files;
 if(isset($_GET['language_id']) && isset($_GET['sora_id'])){
 $code = '';
 }else{
-	
+
 if(get_option('quran_gateway_view') == 1 || is_admin() == 1){
 
 if(get_option('quran_gateway_allow_by_sora')==1){
@@ -67,7 +71,7 @@ if($aya_number==1){
 }elseif($aya_number==3){
 	$a = $random_aya;
 }
-	
+
 $sound_file_ar = ''.$ar_mp3_files.'/'.$s.''.$a.'.mp3';
 
 if(get_option('quran_gateway_id') == 1){
@@ -189,7 +193,7 @@ $language_id = intval($_GET['language_id']);
 $language_id = $l;
 }
 
-if($language_id == 1){ 
+if($language_id == 1){
 	include('files/English_Sahih_International.php');
 }elseif($language_id == 2){
 	include('files/French.php');
@@ -271,20 +275,20 @@ function quran_by_sora_replace($t){
 	$text = preg_replace_callback("/get_sorah\[([0-9]*?)\]/s", "get_quran_by_sora", $t);
 	return $text;
 }
- 
+
 add_filter('the_content','quran_by_sora_replace');
 
 function quran_by_sora_and_language_replace($t){
 	$text = preg_replace_callback("/get_sorah\[([0-9]*?),([0-9]*?)\]/s", "get_quran_by_sora", $t);
 	return $text;
 }
- 
+
 add_filter('the_content','quran_by_sora_and_language_replace');
 
 function get_quran_all_sora($language=0){
 global $post, $sora_ar, $sora_en;
 $ID = $post->ID;
-$permalink = post_permalink( $ID );
+$permalink = get_permalink( $ID );
 //strip_tags()
 
 if( is_array($language) ){
@@ -325,18 +329,20 @@ function quran_all_sora_replace($t){
 	$text = preg_replace_callback("/get_all_sorah\[([0-9]*?)\]/s", "get_quran_all_sora", $t);
 	return $text;
 }
- 
+
 add_filter('the_content','quran_all_sora_replace');
 
 function Quran_Gateway_head() {
     $options = get_option( 'my-theme-options' );
-    $color = $options['color'];
-    echo "<style> h1 { color: $color; } </style>";
+    $color = ( isset($options['color']) ? $options['color'] : '' );
+		if( !empty($color) ){
+			echo "<style> h1 { color: $color; } </style>";
+		}
 }
 add_action( 'wp_head', 'Quran_Gateway_head' );
 
 function Quran_Gateway_install(){
-	add_option( 'quran_gateway_id', '1', '', 'yes' ); 
+	add_option( 'quran_gateway_id', '1', '', 'yes' );
 	add_option( 'quran_gateway_view', '1', '', 'yes' );
 	add_option( 'quran_gateway_by_sora', '1', '', 'yes' );
 	add_option( 'quran_gateway_allow_by_sora', '0', '', 'yes' );
@@ -351,7 +357,7 @@ function Quran_Gateway_install(){
 	add_option( 'quran_gateway_margin', '10', '', 'yes' );
 	add_option( 'quran_gateway_margin_between', '10', '', 'yes' );
 }
-register_activation_hook(__FILE__,'Quran_Gateway_install'); 
+register_activation_hook(__FILE__,'Quran_Gateway_install');
 
 /*
 add_action('wp_head','Quran_Gateway_add_font');
@@ -376,7 +382,7 @@ echo "</style>";
 function Quran_Gateway_admin_style() {
 	wp_register_style( 'quran-gateway-styles', plugin_dir_url( __FILE__ ).'style.css' );
 	wp_enqueue_style( 'quran-gateway-styles' );
-	
+
 }
 add_action('wp_enqueue_scripts', 'Quran_Gateway_admin_style');
 
@@ -499,7 +505,7 @@ if(isset($_POST['submitted']) && $_POST['submitted'] == 1){
 					<?php get_files(); ?>
 					</div>
 					</div>
-									
+
 					<div class="stuffbox">
 					<h3><label for="quran_gateway_view">Allow Quran Random</label></h3>
 					<div class="inside">
@@ -516,16 +522,16 @@ if(isset($_POST['submitted']) && $_POST['submitted'] == 1){
 					</select>
 					</div>
 					</div>
-					
+
 					<div class="stuffbox">
 					<h3><label for="quran_gateway_by_sora">Random by sora</label></h3>
 					<div class="inside">
-						
+
 					<select name="quran_gateway_allow_by_sora" id="quran_gateway_allow_by_sora">
 					<option value="1"<?php if(get_option('quran_gateway_allow_by_sora')==1){ echo ' selected="selected"'; }?>>Yes</option>
 					<option value="0"<?php if(get_option('quran_gateway_allow_by_sora')==0){ echo ' selected="selected"'; }?>>No</option>
 					</select> <label for="quran_gateway_allow_by_sora">Allow random by sora</label><br />
-					
+
 					<select name="quran_gateway_by_sora" id="quran_gateway_by_sora">
 					<?php
 					global $sora_en;
@@ -540,7 +546,7 @@ if(isset($_POST['submitted']) && $_POST['submitted'] == 1){
 					</select> <label for="quran_gateway_by_sora">Select sora</label>
 					</div>
 					</div>
-						
+
 					<div class="stuffbox">
 					<h3><label for="quran_gateway_id">Setting</label></h3>
 					<div class="inside">
@@ -556,7 +562,7 @@ if(isset($_POST['submitted']) && $_POST['submitted'] == 1){
 					}
 					?>
 					</select> <label for="quran_gateway_hidden_text_ar">Arabic text</label><br />
-						
+
 					<select name="quran_gateway_hidden_text_en" id="quran_gateway_hidden_text_en">
 					<?php
 					if(get_option('quran_gateway_hidden_text_en')==1){
@@ -568,7 +574,7 @@ if(isset($_POST['submitted']) && $_POST['submitted'] == 1){
 					}
 					?>
 					</select> <label for="quran_gateway_hidden_text_en">Language text</label><br />
-						
+
 					<select name="quran_gateway_hidden_player" id="quran_gateway_hidden_player">
 					<?php
 					if(get_option('quran_gateway_hidden_player')==1){
@@ -580,7 +586,7 @@ if(isset($_POST['submitted']) && $_POST['submitted'] == 1){
 					}
 					?>
 					</select> <label for="quran_gateway_hidden_player">Audio player</label><br />
-						
+
 					<select name="quran_gateway_hidden_file_download" id="quran_gateway_hidden_file_download">
 					<?php
 					if(get_option('quran_gateway_hidden_file_download')==1){
@@ -592,7 +598,7 @@ if(isset($_POST['submitted']) && $_POST['submitted'] == 1){
 					}
 					?>
 					</select> <label for="quran_gateway_hidden_file_download">Download file</label><br />
-						
+
 					<select name="quran_gateway_padding" id="quran_gateway_padding">
 					<?php
 					echo '<option value="">- - -</option>';
@@ -605,7 +611,7 @@ if(isset($_POST['submitted']) && $_POST['submitted'] == 1){
 					}
 					?>
 					</select> <label for="quran_gateway_padding">Padding</label><br />
-						
+
 					<select name="quran_gateway_margin" id="quran_gateway_margin">
 					<?php
 					echo '<option value="">- - -</option>';
@@ -618,7 +624,7 @@ if(isset($_POST['submitted']) && $_POST['submitted'] == 1){
 					}
 					?>
 					</select> <label for="quran_gateway_margin">Margin</label><br />
-						
+
 					<select name="quran_gateway_margin_between" id="quran_gateway_margin_between">
 					<?php
 					echo '<option value="">- - -</option>';
@@ -631,7 +637,7 @@ if(isset($_POST['submitted']) && $_POST['submitted'] == 1){
 					}
 					?>
 					</select> <label for="quran_gateway_margin_between">Margin between text</label><br />
-						
+
 					<select name="quran_gateway_border" id="quran_gateway_border">
 					<?php
 					echo '<option value="">- - -</option>';
@@ -644,7 +650,7 @@ if(isset($_POST['submitted']) && $_POST['submitted'] == 1){
 					}
 					?>
 					</select> <label for="quran_gateway_border">Border</label><br />
-						
+
 					<select name="quran_gateway_background_color" id="quran_gateway_background_color">
 					<option value="">- - -</option>
 					<?php
@@ -682,7 +688,7 @@ if(isset($_POST['submitted']) && $_POST['submitted'] == 1){
 
 				</form>
 			</div>
-		
+
 			<div id="postbox-container-1" class="postbox-container">
 				<div id="side-sortables" class="meta-box-sortables">
 					<div id="linksubmitdiv" class="postbox ">
@@ -717,7 +723,7 @@ function get_quran_shortcode() {
 				$content = 'get_all_sorah['.$language_id.']';
 			}
 			$language = get_quran_languages($language_id);
-			
+
 			if ( isset($_GET['sora_id']) && $_GET['sora_id'] != "" ) {
 				$sora_id = intval($_GET['sora_id']);
 				$title = ' - '.$sora_en[$sora_id];
@@ -726,13 +732,13 @@ function get_quran_shortcode() {
 				$sora_id = 1;
 				$title = '';
 			}
-			
 
-			
+
+
 			$category_id = 1;
 			$post_title = 'The Noble quran in '.$language[0].''.$title.'';
 			$post_excerpt = 'The Noble quran in '.$language[0].' '.$language[1].''.$title.'';
-			
+
 			$my_post = array(
 			  'post_title'    => $post_title,
 			  'post_content'  => $content,
@@ -773,11 +779,11 @@ function get_quran_shortcode() {
 					<?php get_files(); ?>
 					</div>
 					</div>
-									
+
 					<div class="stuffbox">
 					<h3><label for="quran_gateway_by_sora">Sorah shortcode</label></h3>
 					<div class="inside">
-			
+
 					<select name="quran_gateway_by_sora" id="quran_gateway_by_sora">
 					<?php
 					global $sora_en;
@@ -793,20 +799,20 @@ function get_quran_shortcode() {
 					</select> <label for="quran_gateway_by_sora">Select sorah</label>
 					</div>
 					</div>
-						
+
 					<div id="publishing-action">
 						<input name="Submit" type="submit" class="button-large button-primary" id="publish" value="Get shortcode" />
 					</div>
 
 				</form>
 			</div>
-		
+
 			<div id="postbox-container-1" class="postbox-container">
 				<div id="side-sortables" class="meta-box-sortables">
 					<div id="linksubmitdiv" class="postbox ">
 					<h3><span>View shortcode</span></h3>
 						<div class="inside">
-						
+
 						<?php
 						if(isset($_GET['post_id']) && $_GET['post_id'] != 0 && !isset($_POST['post_id'])){
 							echo '<p style="color:green;">Added Post: ID <a href="post.php?post='.intval($_GET['post_id']).'&action=edit">'.intval($_GET['post_id']).'</a>';
@@ -818,13 +824,13 @@ function get_quran_shortcode() {
 								//echo '<p>Please select from dropmenu.</p>';
 								$lang = 1;
 							}
-							
+
 							if(isset($_POST['quran_gateway_by_sora']) && $_POST['quran_gateway_by_sora'] != 0){
 								echo '<p>Surah shortcode: <code>get_sorah['.intval($_POST['quran_gateway_by_sora']).','.$lang.']</code><br /><a href="admin.php?page=quran-gateway-edit-setting&add=1&add_all_sorah=1&language_id='.intval($_POST['quran_gateway_id']).'&sora_id='.intval($_POST['quran_gateway_by_sora']).'">Add</a></p>';
 							}else{
 								//echo '<p>Please select from dropmenu.</p>';
 							}
-							
+
 							if(!isset($_POST['quran_gateway_by_sora']) && !isset($_POST['quran_gateway_id'])){
 								echo '<p>Please select from dropmenu.</p>';
 							}else{
@@ -832,7 +838,7 @@ function get_quran_shortcode() {
 							}
 						}
 						?>
-						
+
 						</div>
 					</div>
 				</div>
